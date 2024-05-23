@@ -158,11 +158,13 @@ const App = () => {
   });
 
   useEffect(() => {
+    const appElement = document.querySelector(".app");
     if (darkMode) {
-      document.querySelector(".app").classList.add("darkmode");
+      appElement.classList.add("darkmode");
     } else {
-      document.querySelector(".app").classList.remove("darkmode");
+      appElement.classList.remove("darkmode");
     }
+    localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);
 
   // const canvasRef = useRef(null);
