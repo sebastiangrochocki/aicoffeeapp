@@ -10,46 +10,50 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 :root {
-  --red-100: #d8182c;
-  --red-200: #9c1825;
-  --yellow-100: #f7c30c;
-  --purple-100: #856cea;
-  --purple-200: #532fe1;
-  --gray-100: #f3f2f2;
-  --gray-200: #d8d5d5;
-  --gray-300: #bab5b5;
-  --gray-400: #545459;
-  --white: #fff;
-  --black: #141415;
-  --background-warning-idle: var(--yellow-100);
-  --background-danger-idle: var(--red-100);
-  --background-danger-active: var(--red-200);
-  --background-primary-idle: var(--purple-200);
-  --background-primary-active: var(--purple-100);
-  --background-neutral-page-1: var(--white);
-  --background-neutral-page-2: var(--gray-100);
-  --background-neutral-container: var(--white);
-  --background-neutral-idle: var(--gray-200);
-  --background-neutral-active: var(--gray-300);
-  --background-neutral-disabled: var(--gray-100);
-  --foreground-neutral: var(--black);
-  --foreground-neutral-inverted: var(--white);
-  --foreground-neutral-subtle: var(--gray-400);
-  --foreground-neutral-disabled: var(--gray-300);
-  --border-neutral: var(--gray-200);
-
-  .darkmode {
-    --background-neutral-page-1: var(--black);
-    --background-neutral-page-2: var(--black);
-    --background-neutral-container: var(--gray-400);
-    --background-neutral-idle: var(--gray-400);
-    --background-neutral-active: var(--gray-400);
+  .app {
+    --red-100: #d8182c;
+    --red-200: #9c1825;
+    --yellow-100: #f7c30c;
+    --purple-100: #856cea;
+    --purple-200: #532fe1;
+    --gray-100: #f3f2f2;
+    --gray-200: #d8d5d5;
+    --gray-300: #bab5b5;
+    --gray-400: #545459;
+    --white: #fff;
+    --black: #141415;
+    --background-warning-idle: var(--yellow-100);
+    --background-danger-idle: var(--red-100);
+    --background-danger-active: var(--red-200);
+    --background-primary-idle: var(--purple-200);
+    --background-primary-active: var(--purple-100);
+    --background-neutral-page-1: var(--white);
+    --background-neutral-page-2: var(--gray-100);
+    --background-neutral-container: var(--white);
+    --background-neutral-idle: var(--gray-200);
+    --background-neutral-active: var(--gray-300);
     --background-neutral-disabled: var(--gray-100);
-    --foreground-neutral: var(--gray-100);
-    --foreground-neutral-subtle: var(--gray-200);
+    --foreground-neutral: var(--black);
+    --foreground-neutral-inverted: var(--white);
+    --foreground-neutral-subtle: var(--gray-400);
     --foreground-neutral-disabled: var(--gray-300);
-    --border-neutral: var(--gray-400);
-    --foreground-neutral-inverted: var(--black);
+    --border-neutral: var(--gray-200);
+    --focus: 0px 0px 0px 2px var(--purple-100), 0px 0px 0px 6px var(--white), 0px 0px 0px 8px var(--white) !important;
+    &.darkmode {
+      --background-neutral-page-1: var(--black);
+      --background-neutral-page-2: var(--black);
+      --background-neutral-container: var(--gray-400);
+      --background-neutral-idle: var(--gray-400);
+      --background-neutral-active: var(--gray-400);
+      --background-neutral-disabled: var(--gray-100);
+      --foreground-neutral: var(--gray-100);
+      --foreground-neutral-subtle: var(--gray-200);
+      --foreground-neutral-disabled: var(--gray-300);
+      --border-neutral: var(--gray-400);
+      --foreground-neutral-inverted: var(--black);
+      --focus: 0px 0px 0px 2px var(--purple-100), 0px 0px 0px 6px var(--background-neutral),
+        0px 0px 8px 8px var(--purple-100) !important;
+    }
   }
 }
 
@@ -92,7 +96,48 @@ html,
   align-items: center;
   flex-direction: column;
   box-sizing: border-box;
+  .card {
+    padding: 0;
+    border-radius: 8px;
+    background-color: var(--background-neutral);
+    width: 100%;
+    color: var(--foreground-neutral);
+    display: flex;
+    flex-direction: column;
+    .item {
+      width: 100%;
+      justify-content: space-between;
+      padding: 4px 16px;
+      flex-direction: row;
+      align-items: center;
+      display: flex;
+      &:not(:first-child) {
+        &:active {
+          background-color: var(--background-neutral-active);
+        }
+      }
+      border-bottom: 1px solid var(--border-neutral);
 
+      .icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      &:first-child {
+        background-color: var(--purple-200);
+        color: var(--white);
+        border-bottom: 0;
+        .icon-button {
+          color: var(--white);
+        }
+      }
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+  }
   &.splashscreen {
     background-color: var(--white);
     height: 100%;
@@ -248,6 +293,7 @@ html,
   flex-direction: column;
   flex: 1;
   box-sizing: border-box;
+  width: 100%;
   h1 {
     font-size: 32px;
     line-height: 48px;
@@ -271,7 +317,7 @@ html,
   }
 
   h3 {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 32px;
     & + p {
       margin-top: 8px;
@@ -284,6 +330,18 @@ html,
     color: var(--foreground-neutral-subtle);
     &.large {
       font-size: 18px;
+    }
+  }
+  ol {
+    padding-left: 16px;
+    margin-top: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    li {
+      list-style-type: decimal;
+      &:not(:last-child) {
+        margin-bottom: 8px;
+      }
     }
   }
 }
@@ -312,14 +370,12 @@ html,
   border-radius: 8px;
   cursor: pointer;
   overflow: hidden;
-  margin-bottom: 10px;
   box-sizing: border-box;
   font-weight: 500;
   &:active {
     background-color: var(--background-primary-active);
   }
 }
-
 .custom-button.active {
   background-color: var(--background-primary-active);
 }
@@ -343,4 +399,39 @@ html,
   height: 100%;
   background-color: var(--background-primary-active);
   transition: width 0.2s;
+}
+
+.dialog {
+  position: absolute;
+  inset: 0;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  .inputfield {
+    input {
+      background-color: transparent;
+      height: 56px;
+      line-height: 56px;
+      text-align: left;
+    }
+    label {
+      background-color: var(--background-neutral);
+      top: 20px;
+    }
+  }
+  .card {
+    text-align: center;
+    background-color: var(--background-neutral);
+    padding-bottom: 16px;
+  }
+}
+
+.SwitchRoot[data-state="checked"] {
+  background-color: var(--purple-200) !important;
+}
+.SwitchRoot[data-state="unchecked"] {
+  background-color: var(--background-neutral-idle) !important;
 }

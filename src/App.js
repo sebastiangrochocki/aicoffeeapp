@@ -7,20 +7,70 @@ import Signal from "./Signal.js";
 import Mobile from "./Mobile.js";
 import Coffee from "./Coffee.js";
 import ViewTarget from "./ViewTarget.svg";
-import { Flex, IconButton } from "blocksin-system";
+import { Flex, IconButton, Input, Switch } from "blocksin-system";
 // import Product1 from './product1.png';
-import { CaretLeft } from "@phosphor-icons/react";
+import {
+  ArrowCounterClockwise,
+  CaretLeft,
+  LockSimple,
+  WifiHigh,
+} from "@phosphor-icons/react";
 import LongPressButton from "./LongPress.js";
 import { Helmet } from "react-helmet";
 import QrScanner from "react-qr-scanner";
 import Stepper from "./Stepper.js";
 import LineConnector from "./LineConnector";
+import Product from "./product2.png";
+
+const generateRandomNetworkName = () => {
+  const adjectives = ["Fast", "Secure", "Super", "Quick", "Reliable", "Strong"];
+  const nouns = ["Net", "Link", "Wave", "Signal", "Connect", "Stream"];
+  const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  return `${getRandomElement(adjectives)}${getRandomElement(nouns)}`;
+};
+
+const networkNames = Array.from({ length: 6 }, () =>
+  generateRandomNetworkName()
+);
+
+const NetworkList = ({ onNetworkClick }) => {
+  return (
+    <div className="card">
+      <div className="item">
+        <p>Network</p>
+        <IconButton variant="ghost">
+          <ArrowCounterClockwise size={16} weight="bold" />
+        </IconButton>
+      </div>
+      {networkNames.map((networkName, index) => (
+        <div
+          className="item"
+          key={index}
+          onClick={() => onNetworkClick(networkName)}
+        >
+          <p>{networkName}</p>
+          <Flex>
+            <div className="icon">
+              <LockSimple size={16} weight="bold" />
+            </div>
+            <div className="icon">
+              <WifiHigh size={16} weight="bold" />
+            </div>
+          </Flex>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const App = () => {
   const [screen, setScreen] = useState(1);
   const [screen1, setScreen1] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [animateOut, setAnimateOut] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [selectedNetwork, setSelectedNetwork] = useState("");
 
   const handleLongPress = () => {
     setAnimateOut(true);
@@ -43,6 +93,16 @@ const App = () => {
     setCurrentStep(2);
   };
 
+  const handleBackButtonClick4 = () => {
+    setScreen(4);
+    setCurrentStep(2);
+  };
+
+  const handleBackButtonClick5 = () => {
+    setScreen(6);
+    setCurrentStep(3);
+  };
+
   const handleBackButtonClick = () => {
     if (screen === 2) {
       setScreen(1);
@@ -58,6 +118,20 @@ const App = () => {
     setScreen(4);
   };
 
+  const handleNext = () => {
+    setScreen(6);
+    setCurrentStep(3);
+  };
+
+  const handleNetworkClick = (networkName) => {
+    setSelectedNetwork(networkName);
+    setShowDialog(true);
+  };
+
+  const handleFinish = () => {
+    setScreen(8);
+  };
+
   useEffect(() => {
     if (screen === 4) {
       const timeout = setTimeout(() => {
@@ -67,6 +141,29 @@ const App = () => {
       return () => clearTimeout(timeout);
     }
   }, [screen]);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  useEffect(() => {
+    if (screen === 7) {
+      const successTimeout = setTimeout(() => {
+        setShowSuccessMessage(true);
+      }, 6000); // Show success message after 6000ms
+
+      return () => clearTimeout(successTimeout);
+    }
+  }, [screen]);
+
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true";
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.querySelector(".app").classList.add("darkmode");
+    } else {
+      document.querySelector(".app").classList.remove("darkmode");
+    }
+  }, [darkMode]);
 
   // const canvasRef = useRef(null);
   // const videoRef = useRef(null);
@@ -309,16 +406,31 @@ const App = () => {
           <div className="container">
             <div className="text">
               <h3>Link your brewer</h3>
-              <p>
-                Turn on your brewer.
-                <br />
-                Wait until you see the “Waiting for Connection” screen.
+              <p style={{ textAlign: "left" }}>
+                <ol>
+                  <li>Turn on your brewer.</li>
+                  <li>
+                    Wait until you see the “Waiting for Connection” screen.
+                  </li>
+                </ol>
               </p>
             </div>
+          </div>
+          <div className="container">
+            <img
+              src={Product}
+              alt="Product"
+              style={{ width: "100%", borderRadius: "8px" }}
+            />
             <div className="text">
-              <p>Then tap the “Link” button below.</p>
+              <p style={{ textAlign: "left" }}>
+                <ol start="3">
+                  <li>Then tap the “Link” button below. </li>
+                </ol>
+              </p>
             </div>
           </div>
+
           <Flex
             direction="column"
             fluid
@@ -416,11 +528,224 @@ const App = () => {
             <button
               style={{ width: "100%" }}
               className="custom-button custom-button--solid"
-              onClick={handleLink}
+              onClick={handleNext}
             >
               Next
             </button>
           </Flex>
+        </div>
+      )}
+
+      {screen === 6 && (
+        <div className="content screen3 content--show">
+          <Flex justify="between" fluid style={{ padding: "0px 24px" }}>
+            <IconButton variant="ghost" onClick={handleBackButtonClick4}>
+              <CaretLeft size={16} weight="bold" />
+            </IconButton>
+            <Stepper steps={steps} currentStep={currentStep} />
+            <div style={{ width: "40px", height: "40px" }}></div>
+          </Flex>
+
+          <div className="container">
+            <div className="text">
+              <h3>
+                Connect your brewer
+                <br />
+                to your Wi-Fi
+              </h3>
+              <p>
+                Select the Wi-Fi network you would like to connect to, and enter
+                password.
+              </p>
+            </div>
+          </div>
+
+          <Flex
+            fluid
+            justify="between"
+            align="center"
+            customClass="container"
+            style={{ marginTop: "32px" }}
+          >
+            <NetworkList onNetworkClick={handleNetworkClick} />
+          </Flex>
+          <Flex
+            direction="column"
+            fluid
+            style={{ padding: "0 24px", marginBottom: "0", marginTop: "auto" }}
+            gap={200}
+          >
+            <button
+              style={{ width: "100%" }}
+              className="custom-button custom-button--ghost"
+            >
+              Need help?
+            </button>
+          </Flex>
+        </div>
+      )}
+
+      {screen === 7 && (
+        <div className="content screen3 content--show">
+          <Flex justify="between" fluid style={{ padding: "0px 24px" }}>
+            <IconButton variant="ghost" onClick={handleBackButtonClick5}>
+              <CaretLeft size={16} weight="bold" />
+            </IconButton>
+            <Stepper steps={steps} currentStep={currentStep} />
+            <div style={{ width: "40px", height: "40px" }}></div>
+          </Flex>
+
+          <div className="container">
+            {!showSuccessMessage && (
+              <div className="text">
+                <h3>You are almost there!</h3>
+                <p>
+                  Connecting your brewer to your Wi-Fi...
+                  <br />
+                  <br />
+                </p>
+              </div>
+            )}
+            {showSuccessMessage && (
+              <div className="text">
+                <h3>Success!</h3>
+                <p>
+                  Your AiCoffee Brewer is now connected!
+                  <br />
+                  <br />
+                </p>
+              </div>
+            )}
+          </div>
+
+          <Flex
+            fluid
+            justify="between"
+            align="center"
+            customClass="container"
+            style={{ marginTop: "32px" }}
+          >
+            <Mobile />
+            <LineConnector time={1} />
+            <Coffee />
+            <LineConnector time={6000} />
+            <Signal />
+          </Flex>
+          <Flex
+            direction="column"
+            fluid
+            style={{ padding: "0 24px", marginBottom: "0", marginTop: "auto" }}
+            gap={200}
+          >
+            {!showSuccessMessage && (
+              <button
+                style={{ width: "100%" }}
+                className="custom-button custom-button--ghost"
+              >
+                Need help?
+              </button>
+            )}
+            {showSuccessMessage && (
+              <button
+                style={{ width: "100%" }}
+                className="custom-button custom-button--solid"
+                onClick={handleFinish}
+              >
+                Finish
+              </button>
+            )}
+          </Flex>
+        </div>
+      )}
+
+      {screen === 8 && (
+        <div className="content screen3 content--show">
+          <div className="container">
+            <Logo />
+            <div className="text" style={{ marginTop: "32px", gap: "8px" }}>
+              <h3>Home</h3>
+              <Switch
+                checked={darkMode}
+                id="darkmode"
+                onCheckedChange={(checked) => {
+                  setDarkMode(checked);
+                  localStorage.setItem("darkMode", checked);
+                }}
+              >
+                Darkmode
+              </Switch>
+            </div>
+          </div>
+
+          <Flex
+            direction="column"
+            fluid
+            style={{ padding: "0 24px", marginBottom: "0", marginTop: "auto" }}
+            gap={200}
+          ></Flex>
+        </div>
+      )}
+
+      {showDialog && (
+        <div className="dialog">
+          <div className="card">
+            <div className="text">
+              <h3>Enter the password for {selectedNetwork}</h3>
+            </div>
+
+            <Flex
+              direction="column"
+              fluid
+              style={{
+                marginBottom: "0",
+                marginTop: "24px",
+              }}
+              gap={200}
+            >
+              <Input
+                fluid
+                type="password"
+                label="Wi-Fi password"
+                placeholder="Enter password"
+              />
+              <button
+                style={{ width: "100%" }}
+                className="custom-button custom-button--solid"
+                onClick={() => {
+                  setScreen(7);
+                  setCurrentStep(3);
+                  setShowDialog(false);
+                }}
+              >
+                Confirm
+              </button>
+              <button
+                style={{ width: "100%" }}
+                className="custom-button custom-button--outline"
+                onClick={() => setShowDialog(false)}
+              >
+                Cancel
+              </button>
+            </Flex>
+
+            <Flex
+              direction="column"
+              fluid
+              style={{
+                marginBottom: "0",
+                marginTop: "48px",
+              }}
+              gap={200}
+            >
+              <button
+                style={{ width: "100%" }}
+                className="custom-button custom-button--ghost"
+                onClick={() => setShowDialog(false)}
+              >
+                Can't find password?
+              </button>
+            </Flex>
+          </div>
         </div>
       )}
     </div>
