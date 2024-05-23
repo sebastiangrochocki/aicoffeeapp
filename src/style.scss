@@ -63,7 +63,8 @@ html,
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 390px;
+  max-width: 390px;
+  width: 100%;
   max-height: 844px;
   height: 100%;
   background-color: var(--background-neutral-page-1);
@@ -85,6 +86,7 @@ html,
     padding-top: 56px;
   }
   display: flex;
+  width: 100%;
   align-items: center;
   flex-direction: column;
   box-sizing: border-box;
@@ -160,6 +162,31 @@ html,
     pointer-events: all;
     display: flex;
     align-items: end;
+  }
+}
+.screen3 {
+  height: 100%;
+  gap: 24px;
+  display: flex;
+  padding-bottom: 32px;
+}
+.video {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  position: relative;
+  background-color: var(--background-neutral-idle);
+  video,
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  canvas {
+    z-index: -1;
   }
 }
 
