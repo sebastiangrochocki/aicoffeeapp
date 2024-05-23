@@ -1,0 +1,49 @@
+.stepper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.step {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    background-color: var(--white);
+    color: var(--black);
+    font-weight: bold;
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+    padding-bottom: 1px;
+}
+
+.step.current {
+    background-color: var(--background-primary-idle);
+    height: 40px;
+    color: var(--white);
+    border: 1px solid var(--foreground-neutral);
+}
+
+.step.completed {
+    background-color: var(--background-primary-idle);
+    color: var(--white);
+}
+
+.connector {
+    flex: 1;
+    height: 2px;
+    background-color: var(--foreground-neutral);
+    width: 16px;
+    border-radius: 2px;
+}
+
+.connector.current {
+    background-color: var(--background-primary-idle);
+}
+
+.connector.completed {
+    background-color: var(--background-primary-idle);
+}
