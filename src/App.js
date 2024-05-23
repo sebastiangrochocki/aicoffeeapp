@@ -46,8 +46,15 @@ const App = () => {
     let stream;
     let intervalId;
     if (screen === 2) {
+      const constraints = {
+        video: {
+          facingMode: "environment",
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+        },
+      };
       navigator.mediaDevices
-        .getUserMedia({ video: true })
+        .getUserMedia(constraints)
         .then((mediaStream) => {
           stream = mediaStream;
           if (videoRef.current) {
