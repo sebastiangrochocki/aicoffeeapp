@@ -10,7 +10,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 :root {
-  .app {
+  .customTheme {
     --red-100: #d8182c;
     --red-200: #9c1825;
     --yellow-100: #f7c30c;
@@ -64,7 +64,9 @@ html,
   height: 100%;
   overflow: hidden;
 }
-
+.appWrapper {
+  background-color: var(--gray-200);
+}
 .app {
   display: flex;
   justify-content: center;
@@ -76,6 +78,9 @@ html,
   background-color: var(--background-neutral-page-1);
   margin: 0 auto;
   position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
 }
 .darkmode {
   .content.splashscreen {
@@ -83,6 +88,14 @@ html,
       background: linear-gradient(180deg, rgba(17, 17, 20, 0) 0%, var(--black) 70%);
     }
   }
+}
+.ToolbarRoot {
+  gap: 16px;
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  height: 52px;
+  align-items: center;
 }
 
 .content {
@@ -220,6 +233,7 @@ html,
   gap: 24px;
   display: flex;
   padding-bottom: 32px;
+  background-color: var(--background-neutral-page-1);
 }
 .video {
   width: 100%;
@@ -372,9 +386,16 @@ html,
   overflow: hidden;
   box-sizing: border-box;
   font-weight: 500;
+  line-height: 1;
+  padding-bottom: 1px;
   &:active {
     background-color: var(--background-primary-active);
   }
+}
+.custom-button--small {
+  height: 40px;
+  font-size: 16px;
+  padding: 0 16px;
 }
 .custom-button.active {
   background-color: var(--background-primary-active);
