@@ -171,6 +171,8 @@ const App = () => {
   const steps = 3;
 
   const handleScan = (data) => {
+    // setErrorMessage("");
+
     if (data) {
       if (data.text === "https://sebikostudio.com/") {
         setScreen(3); // Go to screen 3 after successful scan

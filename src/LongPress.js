@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const LongPressButton = ({
   children,
@@ -9,7 +9,7 @@ const LongPressButton = ({
 }) => {
   const [isPressed, setIsPressed] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [animationFrame, setAnimationFrame] = useState(null);
+  const animationFrame = useRef(null);
 
   const handleMouseDown = () => {
     setIsPressed(true);
@@ -22,21 +22,23 @@ const LongPressButton = ({
       setProgress(Math.min(elapsed / length, 1));
 
       if (elapsed < length) {
-        setAnimationFrame(requestAnimationFrame(animate));
+        animationFrame.current = requestAnimationFrame(animate);
       } else {
         onLongPress();
+        setIsPressed(false);
+        setProgress(0);
       }
     };
 
-    setAnimationFrame(requestAnimationFrame(animate));
+    animationFrame.current = requestAnimationFrame(animate);
   };
 
   const handleMouseUp = () => {
     setIsPressed(false);
     setProgress(0);
-    if (animationFrame) {
-      cancelAnimationFrame(animationFrame);
-      setAnimationFrame(null);
+    if (animationFrame.current) {
+      cancelAnimationFrame(animationFrame.current);
+      animationFrame.current = null;
     }
   };
 
@@ -51,9 +53,14 @@ const LongPressButton = ({
       style={style}
       {...props}
     >
-      {children}
+      <span style={{ zIndex: "4", position: "relative" }}>{children}</span>
       {isPressed && (
-        <div className="progress-bar" style={{ width: `${progress * 100}%` }} />
+        <div className="progress-container">
+          <div
+            className="progress-bar"
+            style={{ width: `${progress * 100}%` }}
+          />
+        </div>
       )}
     </button>
   );
